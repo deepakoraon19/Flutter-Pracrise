@@ -23,7 +23,13 @@ class MyApp extends StatelessWidget {
         ),
         body: Card(),
         floatingActionButton: FloatingActionButton(
-            onPressed: () => {}, shape: CircleBorder(), child: Text('+')),
+            onPressed: () => {},
+            shape: CircleBorder(),
+            backgroundColor: const Color.fromARGB(255, 55, 54, 54),
+            child: Text(
+              '+',
+              style: TextStyle(fontSize: 25, color: Colors.amber),
+            )),
       ),
     );
   }
