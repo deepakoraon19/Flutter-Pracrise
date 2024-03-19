@@ -1,7 +1,12 @@
+import 'dart:io';
 import 'dart:math';
+import 'package:hello/services/sql_service.dart';
 import 'package:hello/widgets/tiles.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import '../models/mortal.dart';
 import "package:flutter/material.dart";
+import 'package:http/http.dart' as http;
 
 class MortalPedia extends StatefulWidget {
   const MortalPedia({super.key});
@@ -36,6 +41,10 @@ class _MortalPediaState extends State<MortalPedia> {
   ];
   List<Mortal> mortals = [];
   List<Widget> tiles = [];
+  final nameController = TextEditingController();
+  final clanController = TextEditingController();
+  final levelController = TextEditingController();
+  late SqliteService _sqliteService;
 
   List<Mortal> getMortals() => dummyNames
       .map((e) => Mortal(e, e, Random().nextInt(100),
@@ -51,20 +60,103 @@ class _MortalPediaState extends State<MortalPedia> {
         .toList();
   }
 
+  void get() async {
+    try {
+      final database = openDatabase(
+        join(await getDatabasesPath(), 'test.db'),
+        onCreate: (db, version) {
+          return db.execute(
+            'CREATE TABLE IF NOT EXISTS mk11 (name TEXT NOT NULL, clan TEXT NOT NULL, level TEXT NOT NULL)',
+          );
+        },
+        version: 1,
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     mortals = getMortals();
     tiles = getTiles();
+    // _sqliteService = SqliteService();
+    // mortals.forEach((element) {
+    //   _sqliteService.createItem(
+    //       Mortal(element.name, element.clan, element.level, element.imgUrl));
+    // });
+    // get();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.black,
-        child: ListView(
-          children: tiles,
-        ));
+    return Scaffold(
+      body: Container(
+          color: Colors.black,
+          child: ListView(
+            children: tiles,
+          )),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Add character'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(hintText: "Enter name"),
+                        controller: nameController,
+                      ),
+                      TextField(
+                        decoration: InputDecoration(hintText: "Enter clan"),
+                        controller: clanController,
+                      ),
+                      TextField(
+                        decoration: InputDecoration(hintText: "Enter level"),
+                        controller: levelController,
+                      ),
+                    ],
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('Cancel'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    TextButton(
+                      child: const Text('Submit'),
+                      onPressed: () async {
+                        _sqliteService.createItem(Mortal(
+                            nameController.text,
+                            clanController.text,
+                            int.parse(levelController.text),
+                            "https://cdn.vectorstock.com/i/500p/63/36/freddie-mercury-logo-avatar-monochrome-style-vector-26516336.avif"));
+                        stderr.writeln(
+                            '$nameController, $clanController, $levelController');
+                        final x = await _sqliteService.getItems();
+                        setState(() {
+                          x.forEach((e) => mortals.add(e));
+                          tiles = getTiles();
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          shape: CircleBorder(),
+          backgroundColor: const Color.fromARGB(255, 55, 54, 54),
+          child: Text(
+            '+',
+            style: TextStyle(fontSize: 25, color: Colors.amber),
+          )),
+    );
   }
 }

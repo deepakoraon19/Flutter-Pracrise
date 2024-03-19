@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello/models/mortal.dart';
 import 'package:hello/widgets/basicInfo.dart';
+import 'package:hello/widgets/calc.dart';
 import 'package:hello/widgets/contact.dart';
 import 'package:hello/widgets/mortalPedia.dart';
 import 'package:hello/widgets/name.dart';
@@ -12,26 +13,26 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return MaterialApp(home: MyHome(), routes: {
+      '/add': (context) => Home(),
+    });
+  }
+}
+
+class MyHome extends StatelessWidget {
+  const MyHome({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 81, 82, 82),
+          backgroundColor: Color.fromARGB(255, 35, 36, 36),
           title: Text(
-            "MortalsPedia",
-            style: TextStyle(color: Colors.white),
+            "MK-11",
+            style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
-        body: MortalPedia(),
-        floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            shape: CircleBorder(),
-            backgroundColor: const Color.fromARGB(255, 55, 54, 54),
-            child: Text(
-              '+',
-              style: TextStyle(fontSize: 25, color: Colors.amber),
-            )),
-      ),
-    );
+        body: MortalPedia());
   }
 }
