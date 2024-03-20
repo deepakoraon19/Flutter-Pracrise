@@ -15,7 +15,7 @@ jobs:
       - name: Install Flutter
         uses: actions/setup-java@v3
         with:
-          java-version: 8.76.0.17
+          java-version: 8
           distribution: 'zulu'
 
       - name: Cache Flutter tools
