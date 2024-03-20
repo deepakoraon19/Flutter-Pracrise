@@ -142,9 +142,9 @@ class _MortalPediaState extends State<MortalPedia> {
                             clanController.text,
                             int.parse(levelController.text),
                             testImageURL));
-                        final x = await _sqliteService.get();
+                        final data = await _sqliteService.get();
                         setState(() {
-                          x.forEach((e) => mortals.add(e));
+                          data.forEach((e) => mortals.add(e));
                           tiles = getTiles();
                         });
                         Navigator.of(context).pop();
