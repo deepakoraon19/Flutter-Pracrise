@@ -24,7 +24,7 @@ class _MortalDetailState extends State<MortalDetail> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(25),
               child: CircleAvatar(
                 radius: 80,
                 backgroundImage: NetworkImage(mortal.imgUrl),
@@ -40,21 +40,33 @@ class _MortalDetailState extends State<MortalDetail> {
               children: [
                 Text(
                   mortal.clan,
-                  style: TextStyle(color: Colors.amber, fontSize: 17),
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 7, 7),
+                      fontSize: 17),
                 ),
                 Text(
-                  '  -  Level ${mortal.level}',
-                  style: TextStyle(color: Colors.amber, fontSize: 17),
+                  '  -  ',
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 7, 7),
+                      fontSize: 17),
+                ),
+                Text(
+                  'Level ${mortal.level}',
+                  style: TextStyle(
+                      color: const Color.fromARGB(255, 255, 7, 7),
+                      fontSize: 17),
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(25.0),
               child: Text(
                 mortal.details != ''
                     ? mortal.details
                     : '${mortal.name} $dummyDetail',
-                style: TextStyle(color: Colors.amber, fontSize: 17),
+                style: TextStyle(
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    fontSize: 17),
               ),
             ),
           ],

@@ -20,6 +20,6 @@ class Mortal {
       : name = item["name"],
         clan = item["clan"],
         details = item["details"] ?? "",
-        level = int.parse(item["level"]),
+        level = item["level"],
         imgUrl = item["imgURL"] ?? "";
 }

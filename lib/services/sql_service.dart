@@ -5,11 +5,20 @@ import 'package:path/path.dart';
 
 class SqliteService {
   Future<Database> initializeDB() async {
+    // openDatabase(
+    //   join(await getDatabasesPath(), 'test.db'),
+    //   onCreate: (db, version) {
+    //     return db.execute(
+    //       'DROP TABLE mk11',
+    //     );
+    //   },
+    //   version: 1,
+    // );
     return openDatabase(
       join(await getDatabasesPath(), 'test.db'),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE IF NOT EXISTS mk11 (name TEXT NOT NULL, clan TEXT NOT NULL, level INTEGER NOT NULL, imgURL TEXT NOT NULL)',
+          'CREATE TABLE IF NOT EXISTS mk11 (name TEXT NOT NULL, clan TEXT NOT NULL, level INTEGER NOT NULL, imgURL TEXT NOT NULL, details TEXT NOT NULL)',
         );
       },
       version: 1,

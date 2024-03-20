@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/services.dart';
 import 'package:hello/services/sql_service.dart';
 import 'package:hello/widgets/tiles.dart';
 import 'package:path/path.dart';
@@ -44,6 +45,7 @@ class _MortalPediaState extends State<MortalPedia> {
   final nameController = TextEditingController();
   final clanController = TextEditingController();
   final levelController = TextEditingController();
+  final detailController = TextEditingController();
   late SqliteService _sqliteService = SqliteService();
 
   final testImageURL =
@@ -76,7 +78,7 @@ class _MortalPediaState extends State<MortalPedia> {
         .toList();
   }
 
-  void get() async {
+  Future<void> get() async {
     try {
       final res = await _sqliteService.get();
       setState(() {
@@ -116,23 +118,34 @@ class _MortalPediaState extends State<MortalPedia> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextField(
-                        decoration: InputDecoration(hintText: "Enter name"),
+                        decoration: InputDecoration(hintText: "Name"),
                         controller: nameController,
                       ),
                       TextField(
-                        decoration: InputDecoration(hintText: "Enter clan"),
+                        decoration: InputDecoration(hintText: "Clan"),
                         controller: clanController,
                       ),
                       TextField(
-                        decoration: InputDecoration(hintText: "Enter level"),
-                        controller: levelController,
-                      ),
+                          decoration: InputDecoration(hintText: "Level"),
+                          controller: levelController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ]),
+                      TextField(
+                        decoration: InputDecoration(hintText: "Details"),
+                        keyboardType: TextInputType.multiline,
+                        controller: detailController,
+                        minLines: 4,
+                        maxLines: 10,
+                      )
                     ],
                   ),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('Cancel'),
                       onPressed: () {
+                        resetFields();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -145,11 +158,8 @@ class _MortalPediaState extends State<MortalPedia> {
                             int.parse(levelController.text),
                             testImageURL,
                             ""));
-                        final data = await _sqliteService.get();
-                        setState(() {
-                          data.forEach((e) => mortals.add(e));
-                          tiles = getTiles();
-                        });
+                        resetFields();
+                        await get();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -165,5 +175,12 @@ class _MortalPediaState extends State<MortalPedia> {
             style: TextStyle(fontSize: 25, color: Colors.amber),
           )),
     );
+  }
+
+  void resetFields() {
+    nameController.clear();
+    levelController.clear();
+    detailController.clear();
+    clanController.clear();
   }
 }
