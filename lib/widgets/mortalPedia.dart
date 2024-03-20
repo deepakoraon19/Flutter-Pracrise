@@ -44,8 +44,10 @@ class _MortalPediaState extends State<MortalPedia> {
   final nameController = TextEditingController();
   final clanController = TextEditingController();
   final levelController = TextEditingController();
-  late SqliteService _sqliteService;
+  late SqliteService _sqliteService = SqliteService();
 
+  final testImageURL =
+      "https://cdn.vectorstock.com/i/500p/63/36/freddie-mercury-logo-avatar-monochrome-style-vector-26516336.avif";
   List<Mortal> getMortals() => dummyNames
       .map((e) => Mortal(e, e, Random().nextInt(100),
           'https://cdn-mk1.mortalkombat.com/roster/${e.toLowerCase()}/thumb.webp'))
@@ -55,22 +57,31 @@ class _MortalPediaState extends State<MortalPedia> {
     return mortals
         .map((e) => Padding(
               padding: const EdgeInsets.fromLTRB(25, 15, 5, 5),
-              child: Tiles(imgURL: e.imgUrl, name: e.name, level: e.level),
+              child: Tiles(
+                  imgURL: e.imgUrl,
+                  name: e.name,
+                  level: e.level,
+                  delete: () async {
+                    await _sqliteService.delete(e.name);
+                    final res = await _sqliteService.get();
+                    setState(() {
+                      mortals = [];
+                      res.forEach((e) => mortals.add(e));
+                      tiles = getTiles();
+                    });
+                  }),
             ))
         .toList();
   }
 
   void get() async {
     try {
-      final database = openDatabase(
-        join(await getDatabasesPath(), 'test.db'),
-        onCreate: (db, version) {
-          return db.execute(
-            'CREATE TABLE IF NOT EXISTS mk11 (name TEXT NOT NULL, clan TEXT NOT NULL, level TEXT NOT NULL)',
-          );
-        },
-        version: 1,
-      );
+      final res = await _sqliteService.get();
+      setState(() {
+        mortals = [];
+        res.forEach((e) => mortals.add(e));
+        tiles = getTiles();
+      });
     } catch (e) {
       print(e);
     }
@@ -81,12 +92,7 @@ class _MortalPediaState extends State<MortalPedia> {
     super.initState();
     mortals = getMortals();
     tiles = getTiles();
-    // _sqliteService = SqliteService();
-    // mortals.forEach((element) {
-    //   _sqliteService.createItem(
-    //       Mortal(element.name, element.clan, element.level, element.imgUrl));
-    // });
-    // get();
+    get();
   }
 
   @override
@@ -131,14 +137,12 @@ class _MortalPediaState extends State<MortalPedia> {
                     TextButton(
                       child: const Text('Submit'),
                       onPressed: () async {
-                        _sqliteService.createItem(Mortal(
+                        _sqliteService.create(Mortal(
                             nameController.text,
                             clanController.text,
                             int.parse(levelController.text),
-                            "https://cdn.vectorstock.com/i/500p/63/36/freddie-mercury-logo-avatar-monochrome-style-vector-26516336.avif"));
-                        stderr.writeln(
-                            '$nameController, $clanController, $levelController');
-                        final x = await _sqliteService.getItems();
+                            testImageURL));
+                        final x = await _sqliteService.get();
                         setState(() {
                           x.forEach((e) => mortals.add(e));
                           tiles = getTiles();
