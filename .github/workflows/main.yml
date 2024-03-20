@@ -1,0 +1,43 @@
+name: Flutter Web Build and Deploy
+
+on:
+  # Trigger the workflow on push to the main branch
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Flutter
+        uses: google/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Build web app
+        run: flutter build web
+
+      - name: Move build files to docs folder
+        run: mv build/web docs
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: docs
+
+  # Optional deployment job (replace with your deployment steps)
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/download-artifact@v3
+  #       with:
+  #         name: web-build
+  #         path: deploy/web
+  #
+  #     # Replace these steps with your deployment commands
+  #     - run: echo Deploying web app...
