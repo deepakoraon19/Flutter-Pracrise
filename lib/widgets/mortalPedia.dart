@@ -49,8 +49,12 @@ class _MortalPediaState extends State<MortalPedia> {
   final testImageURL =
       "https://cdn.vectorstock.com/i/500p/63/36/freddie-mercury-logo-avatar-monochrome-style-vector-26516336.avif";
   List<Mortal> getMortals() => dummyNames
-      .map((e) => Mortal(e, e, Random().nextInt(100),
-          'https://cdn-mk1.mortalkombat.com/roster/${e.toLowerCase()}/thumb.webp'))
+      .map((e) => Mortal(
+          e,
+          e,
+          Random().nextInt(100),
+          'https://cdn-mk1.mortalkombat.com/roster/${e.toLowerCase()}/thumb.webp',
+          ""))
       .toList();
 
   List<Widget> getTiles() {
@@ -58,9 +62,7 @@ class _MortalPediaState extends State<MortalPedia> {
         .map((e) => Padding(
               padding: const EdgeInsets.fromLTRB(25, 15, 5, 5),
               child: Tiles(
-                  imgURL: e.imgUrl,
-                  name: e.name,
-                  level: e.level,
+                  mortal: e,
                   delete: () async {
                     await _sqliteService.delete(e.name);
                     final res = await _sqliteService.get();
@@ -141,7 +143,8 @@ class _MortalPediaState extends State<MortalPedia> {
                             nameController.text,
                             clanController.text,
                             int.parse(levelController.text),
-                            testImageURL));
+                            testImageURL,
+                            ""));
                         final data = await _sqliteService.get();
                         setState(() {
                           data.forEach((e) => mortals.add(e));

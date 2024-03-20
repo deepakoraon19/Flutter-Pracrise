@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello/models/mortal.dart';
+import 'package:hello/screens/mortal_detail.dart';
 import 'package:hello/widgets/basicInfo.dart';
 import 'package:hello/widgets/calc.dart';
 import 'package:hello/widgets/contact.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(home: MyHome(), routes: {
       '/add': (context) => Home(),
+      '/details': (context) => MortalDetail(),
     });
   }
 }
