@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hello/screens/mortal_detail.dart';
+import 'package:hello/screens/mortalPedia/mortal_detail.dart';
 import 'package:hello/screens/todo/to_do.dart';
 import 'package:hello/widgets/calc.dart';
-import 'package:hello/widgets/mortalPedia.dart';
+import 'package:hello/screens/mortalPedia/mortalPedia.dart';
 
 void main() {
   runApp(MyApp());

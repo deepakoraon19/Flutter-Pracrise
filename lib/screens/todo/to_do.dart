@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello/models/todo.dart';
+import 'package:hello/services/todo_service.dart';
 import 'package:hello/widgets/todo/todo_tile.dart';
 
 class Todo extends StatefulWidget {
@@ -12,6 +13,7 @@ class Todo extends StatefulWidget {
 class _TodoState extends State<Todo> {
   List<ToDoItem> todoList = [];
   List<ToDoTile> todoTiles = [];
+  ToDoService todoSvc = ToDoService();
 
   final titleController = TextEditingController();
   final descController = TextEditingController();
@@ -24,7 +26,14 @@ class _TodoState extends State<Todo> {
   @override
   void initState() {
     super.initState();
-    todoTiles = todoList.map((e) => ToDoTile(item: e)).toList();
+    get();
+  }
+
+  get() async {
+    todoList = await todoSvc.get();
+    setState(() {
+      todoTiles = todoList.map((e) => ToDoTile(item: e)).toList();
+    });
   }
 
   @override
@@ -65,6 +74,7 @@ class _TodoState extends State<Todo> {
                     TextButton(
                       child: const Text('Submit'),
                       onPressed: () async {
+                        // await todoSvc.create(ToDoItem(0, userId, title, desc, lastUpdatedOn))
                         Navigator.of(context).pop();
                       },
                     ),

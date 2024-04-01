@@ -1,19 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:hello/models/mortal.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class SqliteService {
   Future<Database> initializeDB() async {
-    // openDatabase(
-    //   join(await getDatabasesPath(), 'test.db'),
-    //   onCreate: (db, version) {
-    //     return db.execute(
-    //       'DROP TABLE mk11',
-    //     );
-    //   },
-    //   version: 1,
-    // );
     return openDatabase(
       join(await getDatabasesPath(), 'test.db'),
       onCreate: (db, version) {
