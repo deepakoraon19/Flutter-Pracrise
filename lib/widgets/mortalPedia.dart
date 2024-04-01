@@ -1,13 +1,9 @@
-import 'dart:io';
 import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:hello/services/sql_service.dart';
 import 'package:hello/widgets/tiles.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import '../models/mortal.dart';
 import "package:flutter/material.dart";
-import 'package:http/http.dart' as http;
 
 class MortalPedia extends StatefulWidget {
   const MortalPedia({super.key});
@@ -94,8 +90,9 @@ class _MortalPediaState extends State<MortalPedia> {
   @override
   void initState() {
     super.initState();
-    mortals = getMortals();
-    tiles = getTiles();
+    // mortals = getMortals();
+    // tiles = getTiles();
+    // mortals.forEach((p) => _sqliteService.create(p));
     get();
   }
 
@@ -152,7 +149,7 @@ class _MortalPediaState extends State<MortalPedia> {
                     TextButton(
                       child: const Text('Submit'),
                       onPressed: () async {
-                        _sqliteService.create(Mortal(
+                        await _sqliteService.create(Mortal(
                             nameController.text,
                             clanController.text,
                             int.parse(levelController.text),

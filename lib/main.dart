@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hello/models/mortal.dart';
 import 'package:hello/screens/mortal_detail.dart';
-import 'package:hello/widgets/basicInfo.dart';
+import 'package:hello/screens/todo/to_do.dart';
 import 'package:hello/widgets/calc.dart';
-import 'package:hello/widgets/contact.dart';
 import 'package:hello/widgets/mortalPedia.dart';
-import 'package:hello/widgets/name.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,11 +27,11 @@ class MyHome extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 35, 36, 36),
           title: Text(
-            "MK-11",
+            "To-do",
             style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
-        body: MortalPedia());
+        body: Todo());
   }
 }
