@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:hello/services/sql_service.dart';
-import 'package:hello/widgets/tiles.dart';
-import '../models/mortal.dart';
+import 'package:hello/widgets/mortalsPerdia/tiles.dart';
+import '../../models/mortal.dart';
 import "package:flutter/material.dart";
 
 class MortalPedia extends StatefulWidget {
